@@ -33,7 +33,18 @@ module.exports = function (app) {
         if (err) {
           console.log(err);
         } else {
-          res.json(data);
+          // Create an array of book objects where only comments are shown (no comment '_id')
+          let useData = data.map(each => {
+            return {
+              _id: each._id,
+              title: each.title,
+              comments: each.comments.map(each => each.comment),
+              commentcount: each.commentcount
+            }
+          })
+          
+          // Show all titles
+          res.json(useData);
         }
       });
     })
@@ -105,8 +116,11 @@ module.exports = function (app) {
           // Sometimes an empty array is returned when an invalid 'bookId' is entered
           res.send('no book exists');
         } else {
+          // Create an array of only comments (no '_id')
+          let justComments = data[0].comments.map(each => each.comment);
+
           // Show title details
-          res.json({_id: data[0]._id, title: data[0].title, comments: data[0].comments, commentcount: data[0].commentcount});
+          res.json({_id: data[0]._id, title: data[0].title, comments: justComments, commentcount: data[0].commentcount});
         }
       });
     })

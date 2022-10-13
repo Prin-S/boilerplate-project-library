@@ -115,7 +115,13 @@ suite('Functional Tests', function() {
           assert.property(res.body, 'comments');
           assert.property(res.body, 'commentcount');
           assert.equal(res.type, 'application/json');
-          assert.equal(res.text, '{"_id":"' + res.body._id + '","title":"Maggi","comments":[' + res.body.comments + '],"commentcount":' + res.body.commentcount + '}');
+          assert.equal(res.text, '{"_id":"' 
+            + res.body._id 
+            + '","title":"Maggi","comments":[' 
+            + res.body.comments.map(each => '"' + each + '"') 
+            + '],"commentcount":' 
+            + res.body.commentcount 
+            + '}');
           done();
         });
       });
@@ -141,7 +147,9 @@ suite('Functional Tests', function() {
           assert.equal(res.type, 'application/json');
           assert.equal(res.text, '{"_id":"' 
             + res.body._id 
-            + '","title":"Maggi","comments":["' + res.body.comments + '"],"commentcount":' 
+            + '","title":"Maggi","comments":[' 
+            + res.body.comments.map(each => '"' + each + '"') 
+            + '],"commentcount":' 
             + res.body.commentcount 
             + '}');
           done();
